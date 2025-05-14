@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    enum Surface { Lurra, Ezkerra, Eskubi, Zapaia }
+    public enum Surface { Lurra, Ezkerra, Eskubi, Zapaia }
     Surface currentSurface = Surface.Lurra;
 
     public float speed = 10f;
@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
     public GameObject shield;
     public bool blink;
 
+    public GameObject arrowPrefab; // Prefab de la flecha
+    public Transform shotSpawnPoint; // Punto de aparición del disparo
+
     void Awake()
     {
         lm = FindObjectOfType<LifeManager>();
@@ -27,41 +30,54 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.inGame)
+        if (!GameManager.inGame) return;
+
+        Vector2 moveInput = Vector2.zero;
+
+        // Movimiento según superficie actual
+        switch (currentSurface)
         {
-            Vector2 moveInput = Vector2.zero;
+            case Surface.Lurra:
+                moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
+                break;
+            case Surface.Zapaia:
+                moveInput = new Vector2(-Input.GetAxisRaw("Horizontal"), 0);
+                break;
+            case Surface.Ezkerra:
+            moveInput = new Vector2(0, -Input.GetAxisRaw("Horizontal"));
+            break;
+            case Surface.Eskubi:
+                moveInput = new Vector2(0, Input.GetAxisRaw("Horizontal"));
+                break;
+        }
 
-            // Movimiento según superficie actual
-            switch (currentSurface)
-            {
-                case Surface.Lurra:
-                    moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
-                    break;
-                case Surface.Zapaia:
-                    moveInput = new Vector2(-Input.GetAxisRaw("Horizontal"), 0);
-                    break;
-                case Surface.Ezkerra:
-                        moveInput = new Vector2(0, -Input.GetAxisRaw("Horizontal"));
-                        break;
-                case Surface.Eskubi:
-                    moveInput = new Vector2(0, Input.GetAxisRaw("Horizontal"));
-                    break;
-            }
+        animator.SetFloat("velX", moveInput.x);
+        animator.SetFloat("velY", moveInput.y);
 
-            animator.SetFloat("velX", moveInput.x);
-            animator.SetFloat("velY", moveInput.y);
+        if (moveInput.x < 0) sr.flipX = true;
+        else if (moveInput.x > 0) sr.flipX = false;
 
-            if (moveInput.x < 0)
-                sr.flipX = true;
-            else if (moveInput.x > 0)
-                sr.flipX = false;
+        rb.MovePosition(rb.position + moveInput * speed * Time.deltaTime);
 
-            rb.MovePosition(rb.position + moveInput * speed * Time.deltaTime);
+        if (GameManager.gm.time < 0)
+        {
+            StartCoroutine(Lose());
+        }
 
-            if (GameManager.gm.time < 0)
-            {
-                StartCoroutine(Lose());
-            }
+        // Disparo
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ShootArrow();
+        }
+    }
+
+    void ShootArrow()
+    {
+        if (arrowPrefab != null && shotSpawnPoint != null)
+        {
+            GameObject shot = Instantiate(arrowPrefab, shotSpawnPoint.position, Quaternion.identity);
+            ShotArrow arrow = shot.GetComponent<ShotArrow>();
+            arrow.SetSurface(currentSurface);
         }
     }
 
@@ -86,7 +102,6 @@ public class Player : MonoBehaviour
 
     void UpdateGravity()
     {
-        // Solo el suelo tiene gravedad
         rb.gravityScale = (currentSurface == Surface.Lurra) ? 1f : 0f;
     }
 
@@ -94,31 +109,6 @@ public class Player : MonoBehaviour
     {
         if (GameManager.inGame && !FreezeManager.fm.freeze)
         {
-            // Comprobamos que no sea la misma superficie
-            if (collision.CompareTag("lurra") && currentSurface != Surface.Lurra)
-            {
-                currentSurface = Surface.Lurra;
-                AlignToSurface(currentSurface);
-                UpdateGravity();
-            }
-            else if (collision.CompareTag("ezkerra") && currentSurface != Surface.Ezkerra)
-            {
-                currentSurface = Surface.Ezkerra;
-                AlignToSurface(currentSurface);
-                UpdateGravity();
-            }
-            else if (collision.CompareTag("eskubi") && currentSurface != Surface.Eskubi)
-            {
-                currentSurface = Surface.Eskubi;
-                AlignToSurface(currentSurface);
-                UpdateGravity();
-            }
-            else if (collision.CompareTag("zapaia") && currentSurface != Surface.Zapaia)
-            {
-                currentSurface = Surface.Zapaia;
-                AlignToSurface(currentSurface);
-                UpdateGravity();
-            }
             if (collision.CompareTag("ball") || collision.CompareTag("Hexagon"))
             {
                 if (shield.activeInHierarchy)
@@ -133,7 +123,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        // Cambiar superficie
+        // Cambio de superficie
         if (collision.CompareTag("lurra"))
         {
             currentSurface = Surface.Lurra;
@@ -213,7 +203,6 @@ public class Player : MonoBehaviour
         lm.LifeLose();
 
         yield return new WaitForSeconds(1);
-
         rb.isKinematic = false;
 
         if (transform.position.x <= 0)
