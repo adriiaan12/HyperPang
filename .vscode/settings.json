@@ -52,5 +52,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "SuperPang-master.sln"
+    "dotnet.defaultSolution": "HyperPang.sln"
 }
