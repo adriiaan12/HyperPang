@@ -41,7 +41,7 @@ public class ScoreManager : MonoBehaviour {
         if (currentScore > hiScore)
         {
             hiScore = currentScore;
-            hiScoreText.text = "HI - " + hiScore.ToString();
+            hiScoreText.text = "Más Alta - " + hiScore.ToString();
 
             PlayerPrefs.SetInt("HiScore", hiScore);
 
@@ -51,6 +51,6 @@ public class ScoreManager : MonoBehaviour {
     public void UpdateHiScore()
     {
         hiScore = PlayerPrefs.GetInt("HiScore");
-        hiScoreText.text = "HI - " + hiScore.ToString();
+        hiScoreText.text = "Más Alta - " + hiScore.ToString();
     }
 }

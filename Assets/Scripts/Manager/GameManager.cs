@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour {
             if (inGame)
             {
                 time -= Time.deltaTime;
-                timeTXT.text = "Denbora " + time.ToString("f0");
+                timeTXT.text = "Tiempo " + time.ToString("f0");
 
             }
         }
