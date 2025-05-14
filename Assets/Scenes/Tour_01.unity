@@ -317,6 +317,37 @@ MonoBehaviour:
   freezeTimeCount: {fileID: 961850516}
   freezeTime: 0
   freeze: 0
+--- !u!1 &345291112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 345291113}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &345291113
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345291112}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.06, y: 0.73, z: 0.03781913}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1224302246}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &368206458
 GameObject:
   m_ObjectHideFlags: 0
@@ -2403,6 +2434,7 @@ GameObject:
   - component: {fileID: 1224302248}
   - component: {fileID: 1224302249}
   - component: {fileID: 1224302250}
+  - component: {fileID: 1224302251}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -2479,6 +2511,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1867487165}
+  - {fileID: 345291113}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1224302247
@@ -2542,14 +2575,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aea8e908f914864eb2fd9a9a85f3c2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedY: 4
-  climb: 0
-  inGround: 0
-  isUp: 0
-  eskubiHorma: 0
-  ezkerHorma: 0
-  shield: {fileID: 1867487162}
-  blink: 0
 --- !u!58 &1224302250
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2586,6 +2611,24 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.058556557, y: 0.47024345}
   m_Radius: 0.4712
+--- !u!114 &1224302251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224302244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea2eb36dae6de74cb00efc22d745afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 50
+  shield: {fileID: 1867487162}
+  blink: 0
+  arrowPrefab: {fileID: 1572133254941462, guid: a7514f3dc7b71e44b97d4c4a69bec80f,
+    type: 3}
+  shotSpawnPoint: {fileID: 345291113}
 --- !u!1 &1259554326
 GameObject:
   m_ObjectHideFlags: 0
