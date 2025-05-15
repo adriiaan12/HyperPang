@@ -26,9 +26,8 @@ public class ShotGun : MonoBehaviour
         }
 
         // Si toca cualquier superficie en el layer "Ground"
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") || collision.gameObject.layer == LayerMask.NameToLayer("ball"))
         {   
-            Debug.Log("Tocado: " + collision.gameObject.name);
             Destroy(gameObject);
             ShootManager.shm.DestroyShot();
         }

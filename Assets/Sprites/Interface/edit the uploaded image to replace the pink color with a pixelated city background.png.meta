@@ -162,7 +162,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      edit the uploaded image to replace the pink color with a pixelated city background_0: 373718346566671490
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

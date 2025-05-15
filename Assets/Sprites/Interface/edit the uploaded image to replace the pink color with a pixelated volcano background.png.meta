@@ -162,7 +162,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      edit the uploaded image to replace the pink color with a pixelated volcano background_0: -8449480773552297156
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

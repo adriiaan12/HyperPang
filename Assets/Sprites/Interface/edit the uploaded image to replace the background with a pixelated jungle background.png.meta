@@ -162,7 +162,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      edit the uploaded image to replace the background with a pixelated jungle background_0: -5046298100134150016
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
