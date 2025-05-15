@@ -839,7 +839,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Puntuaketa
+  m_Text: "Puntuaci\xF3n"
 --- !u!222 &457932600
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2914,7 +2914,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Soberako denbora
+  m_Text: Tiempo Restante
 --- !u!222 &1154019337
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2993,7 +2993,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fruitu kopurua
+  m_Text: Frutas Obtenidas
 --- !u!222 &1158583602
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4374,7 +4374,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Zuntzituriko Bolak
+  m_Text: Bolas Eliminadas
 --- !u!222 &1827188350
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4612,6 +4612,10 @@ PrefabInstance:
     - target: {fileID: 1977106525750532, guid: af1e194c9ab0ae9488096a234fe99d89, type: 3}
       propertyPath: m_Name
       value: RedBall_1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1977106525750532, guid: af1e194c9ab0ae9488096a234fe99d89, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4046279519005584, guid: af1e194c9ab0ae9488096a234fe99d89, type: 3}
       propertyPath: m_RootOrder
@@ -4886,6 +4890,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1977106525750532, guid: af1e194c9ab0ae9488096a234fe99d89, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4046279519005584, guid: af1e194c9ab0ae9488096a234fe99d89, type: 3}
       propertyPath: m_RootOrder
       value: 4
