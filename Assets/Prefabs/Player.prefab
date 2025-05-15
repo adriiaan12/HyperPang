@@ -161,8 +161,7 @@ MonoBehaviour:
   gravity: -20
   shield: {fileID: 1984990917473760}
   blink: 0
-  arrowPrefab: {fileID: 1572133254941462, guid: a7514f3dc7b71e44b97d4c4a69bec80f,
-    type: 3}
+  arrowPrefab: {fileID: 0}
   shotSpawnPoint: {fileID: 1291397424972867613}
   groundCheck: {fileID: 6598065179898285481}
   groundCheckRadius: 0.1
