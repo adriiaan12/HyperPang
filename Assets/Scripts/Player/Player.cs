@@ -157,10 +157,20 @@ public class Player : MonoBehaviour
 
     void ShootArrow()
     {
+        Debug.Log($"arrowPrefab is {(arrowPrefab == null ? "null" : "not null")}");
+        Debug.Log($"shotSpawnPoint is {(shotSpawnPoint == null ? "null" : "not null")}");
+
         if (arrowPrefab != null && shotSpawnPoint != null)
         {
             GameObject shot = Instantiate(arrowPrefab, shotSpawnPoint.position, Quaternion.identity);
             ShotArrow arrow = shot.GetComponent<ShotArrow>();
+
+            if (arrow == null)
+            {
+                Debug.LogError("El prefab instanciado NO tiene el componente ShotArrow");
+                return;
+            }
+
             arrow.SetSurface(currentSurface);
         }
     }

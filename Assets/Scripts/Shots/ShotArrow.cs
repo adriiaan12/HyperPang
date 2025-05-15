@@ -21,6 +21,9 @@ public class ShotArrow : MonoBehaviour
             GameObject chain = Instantiate(chainGFX, transform.position, Quaternion.identity);
             chain.transform.parent = transform;
         }
+
+        // Destruir la flecha después de 3 segundos para evitar que quede indefinidamente
+        Destroy(gameObject, 5f);
     }
 
     void Update()
@@ -63,31 +66,36 @@ public class ShotArrow : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
+{
+    Debug.Log($"ShotArrow collided with: {collision.gameObject.name} (Tag: {collision.tag}, Layer: {collision.gameObject.layer})");
+
+    if (collision.gameObject.name.Contains("DestroyBall"))
     {
-        if (collision.gameObject.name.Contains("DestroyBall"))
-        {
-            BallManager.bm.Dinamite(6);
-        }
+        BallManager.bm.Dinamite(6);
+    }
+    else if (collision.gameObject.name.Contains("StopBall"))
+    {
+        FreezeManager.fm.StartFreeze(6);
+    }
+    else if (collision.CompareTag("ball"))
+    {
+        collision.GetComponent<Ball>().Split();
+    }
+    else if (collision.CompareTag("Hexagon"))
+    {
+        collision.GetComponent<Hexagon>().Split();
+    }
 
-        if (collision.gameObject.name.Contains("StopBall"))
-        {
-            FreezeManager.fm.StartFreeze(6);
-        }
-
-        if (collision.CompareTag("ball"))
-        {
-            collision.GetComponent<Ball>().Split();
-        }
-
-        if (collision.CompareTag("Hexagon"))
-        {
-            collision.GetComponent<Hexagon>().Split();
-        }
-
-        if (!collision.CompareTag("Player") && !collision.CompareTag("leader"))
+    // Destruye el disparo si colisiona con el suelo, bolas o cualquier objeto que no sea jugador o líder
+    if (!collision.CompareTag("Player") && !collision.CompareTag("leader"))
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") || collision.gameObject.layer == LayerMask.NameToLayer("ball") || 
+            !collision.CompareTag("ball") && !collision.CompareTag("Hexagon"))
         {
             Destroy(gameObject);
             ShootManager.shm.DestroyShot();
+            return; // Para que no siga ejecutando
         }
     }
+}
 }

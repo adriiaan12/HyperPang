@@ -1276,7 +1276,13 @@ PrefabInstance:
         type: 3}
       propertyPath: arrowPrefab
       value: 
-      objectReference: {fileID: 999756751}
+      objectReference: {fileID: 1572133254941462, guid: a7514f3dc7b71e44b97d4c4a69bec80f,
+        type: 3}
+    - target: {fileID: 4162463094642302744, guid: 423b037dbfc68844cbf065c4d0bb0f0d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1976,6 +1982,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1977106525750532, guid: af1e194c9ab0ae9488096a234fe99d89, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4046279519005584, guid: af1e194c9ab0ae9488096a234fe99d89, type: 3}
       propertyPath: m_RootOrder
       value: 1
