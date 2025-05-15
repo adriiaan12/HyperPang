@@ -3,53 +3,39 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class SelectMode : MonoBehaviour {
-    public Image tourModeImage;
-    public Text tourModeText;
-    public Image panicModeImage;
-    public Text panicModeText;
+    public Image[] modeImages;
+    public Text[] modeTexts;
 
-    public bool mode;
-    // Use this for initialization
+    private string[] sceneNames = { "Tour_01", "Tour_02", "Tour_03", "Tour_04" };
+    private int modeIndex = 0; // Índice para seleccionar el modo actual
+
     void Start () {
-        mode = true;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        UpdateSelection();
+    }
 
-        if (mode)
-        {
-            tourModeImage.color = new Color(1, 1, 1);
-            tourModeText.color = new Color(1, 1, 1);
-            panicModeImage.color = new Color(1, 1, 0,0.5f);
-            panicModeText.color = new Color(1, 1, 0, 0.5f);
+    void Update () {
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            modeIndex = (modeIndex + 1) % modeImages.Length; // Avanza al siguiente modo
+            UpdateSelection();
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            modeIndex = (modeIndex - 1 + modeImages.Length) % modeImages.Length; // Retrocede al anterior
+            UpdateSelection();
+        }
+        if (Input.GetKeyDown(KeyCode.Return)) {
+            SceneManager.LoadScene(sceneNames[modeIndex]); // Carga la escena correspondiente
+        }
+    }
 
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                mode = false;
-            }
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                SceneManager.LoadScene("Tour_01");
+    void UpdateSelection() {
+        for (int i = 0; i < modeImages.Length; i++) {
+            if (i == modeIndex) {
+                modeImages[i].color = new Color(1, 1, 1); // Imagen seleccionada brillante
+                modeTexts[i].color = new Color(1, 1, 1);
+            } else {
+                modeImages[i].color = new Color(1, 1, 0, 0.5f); // Imágenes no seleccionadas oscurecidas
+                modeTexts[i].color = new Color(1, 1, 0, 0.5f);
             }
         }
-        else
-        {
-            tourModeImage.color = new Color(1, 1, 0, 0.5f);
-            tourModeText.color = new Color(1, 1, 0, 0.5f);
-            panicModeImage.color = new Color(1, 1, 1);
-            panicModeText.color = new Color(1, 1, 1);
-
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                mode = true;
-            }
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                SceneManager.LoadScene("Panic");
-            }
-        }
-        
-       
     }
 }
