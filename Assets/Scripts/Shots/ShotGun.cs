@@ -6,7 +6,6 @@ using static Player; // Para usar Player.Surface
 public class ShotGun : MonoBehaviour
 {
     float speed = 8f;
-
     Vector2 direction = Vector2.up;
 
     void Update()
@@ -16,11 +15,8 @@ public class ShotGun : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("zapaia"))
-        {
-            // Lógica opcional
-        }
-        else if (collision.CompareTag("ball"))
+        // Si toca un enemigo
+        if (collision.CompareTag("ball"))
         {
             collision.GetComponent<Ball>().Split();
         }
@@ -29,8 +25,13 @@ public class ShotGun : MonoBehaviour
             collision.GetComponent<Hexagon>().Split();
         }
 
-        Destroy(gameObject);
-        ShootManager.shm.DestroyShot();
+        // Si toca cualquier superficie en el layer "Ground"
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {   
+            Debug.Log("Tocado: " + collision.gameObject.name);
+            Destroy(gameObject);
+            ShootManager.shm.DestroyShot();
+        }
     }
 
     public void SetSurface(Surface surface)
