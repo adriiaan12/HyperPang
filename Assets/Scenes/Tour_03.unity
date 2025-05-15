@@ -2676,6 +2676,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 50826643660928358, guid: 423b037dbfc68844cbf065c4d0bb0f0d,
+        type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 58177199972637852, guid: 423b037dbfc68844cbf065c4d0bb0f0d,
         type: 3}
       propertyPath: m_Radius
@@ -5160,9 +5165,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ready: {fileID: 295812996}
-  gamemode: 0
+  gamemode: 1
   time: 100
-  timeTXT: {fileID: 0}
+  timeTXT: {fileID: 1688719193}
   ballsDestroyed: 0
   fruitsTaken: 0
   panel: {fileID: 1307383101}

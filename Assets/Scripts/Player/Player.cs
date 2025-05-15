@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,10 +9,8 @@ public class Player : MonoBehaviour
     Surface currentSurface = Surface.Lurra;
 
     public float speed = 10f;
-    public float climbSpeed = 8f;
-    public float jumpForce = 18f;
-
-    public float gravity = -30f;
+    public float climbSpeed = 5f;
+    public float jumpForce = 12f;
 
     Rigidbody2D rb;
     Animator animator;
@@ -33,45 +31,49 @@ public class Player : MonoBehaviour
     private bool isClimbing = false;
     private bool isGrounded = false;
 
-    private Vector2 velocity;
-
     void Awake()
     {
         lm = FindObjectOfType<LifeManager>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
-
-        rb.bodyType = RigidbodyType2D.Kinematic;
     }
 
     void Update()
     {
         if (!GameManager.inGame) return;
 
+        // Comprobar si estamos en el suelo
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        Vector2 moveInput = Vector2.zero;
-
+        // Escalar si estamos en leader y pulsamos W o S
         if (onLeader && Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f)
         {
             isClimbing = true;
-            velocity.y = Input.GetAxisRaw("Vertical") * climbSpeed;
+            rb.gravityScale = 0f;
+            rb.linearVelocity = Vector2.zero; // Para que no se acumule velocidad al comenzar a escalar
+            animator.SetBool("climb",true);
         }
-        else if (isClimbing && !onLeader)
+        else if (!onLeader)
         {
             isClimbing = false;
+            rb.gravityScale = 1f;
+            animator.SetBool("climb",false);
         }
 
         if (isClimbing)
         {
-            velocity.x = 0;
+            float vertical = Input.GetAxisRaw("Vertical");
+            rb.linearVelocity = new Vector2(0, vertical * climbSpeed);
+
             animator.SetFloat("velX", 0);
-            animator.SetFloat("velY", velocity.y);
-            rb.MovePosition(rb.position + new Vector2(0, velocity.y * Time.deltaTime));
-            return;
+            animator.SetFloat("velY", vertical);
+
+            return; // No hacemos nada más mientras escalamos
         }
 
+        // Movimiento horizontal y vertical según superficie
+        Vector2 moveInput = Vector2.zero;
         switch (currentSurface)
         {
             case Surface.Lurra:
@@ -88,38 +90,31 @@ public class Player : MonoBehaviour
                 break;
         }
 
-        velocity.x = moveInput.x * speed;
-
-        if (Input.GetKeyDown(KeyCode.W) && isGrounded && currentSurface == Surface.Lurra && !isClimbing)
-        {
-            velocity.y = jumpForce;
-            animator.SetTrigger("jump");
-        }
-
-        // Aplicar gravedad constante
-        if (!isGrounded && !isClimbing)
-        {
-            velocity.y += gravity * Time.deltaTime;
-        }
-        else if (isGrounded && velocity.y < 0)
-        {
-            velocity.y = 0;
-        }
-
-        Vector2 nextPos = rb.position + velocity * Time.deltaTime;
-        rb.MovePosition(nextPos);
-
         animator.SetFloat("velX", moveInput.x);
+        int velXint = (int)moveInput.x;
+        animator.SetInteger("velX", velXint);
+
         animator.SetFloat("velY", moveInput.y);
 
         if (moveInput.x < 0) sr.flipX = true;
         else if (moveInput.x > 0) sr.flipX = false;
 
+        rb.MovePosition(rb.position + moveInput * speed * Time.deltaTime);
+
+        // Salto (solo en Lurra, si estamos en suelo y no escalando)
+        if (Input.GetKeyDown(KeyCode.W) && isGrounded && currentSurface == Surface.Lurra && !isClimbing)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            animator.SetTrigger("jump");
+        }
+
+        // Disparo
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ShootArrow();
         }
 
+        // Si se acaba el tiempo
         if (GameManager.gm.time < 0)
         {
             StartCoroutine(Lose());
@@ -155,6 +150,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    void UpdateGravity()
+    {
+        rb.gravityScale = (currentSurface == Surface.Lurra) ? 1f : 0f;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (GameManager.inGame && !FreezeManager.fm.freeze)
@@ -182,21 +182,32 @@ public class Player : MonoBehaviour
         {
             currentSurface = Surface.Lurra;
             AlignToSurface(currentSurface);
+            UpdateGravity();
         }
         else if (collision.CompareTag("ezkerra"))
         {
             currentSurface = Surface.Ezkerra;
             AlignToSurface(currentSurface);
+            UpdateGravity();
         }
         else if (collision.CompareTag("eskubi"))
         {
             currentSurface = Surface.Eskubi;
             AlignToSurface(currentSurface);
+            UpdateGravity();
         }
         else if (collision.CompareTag("zapaia"))
         {
             currentSurface = Surface.Zapaia;
             AlignToSurface(currentSurface);
+            UpdateGravity();
+        }
+
+        if (!GameManager.inGame && (collision.CompareTag("ezkerra") || collision.CompareTag("eskubi")))
+        {
+            sr.flipX = !sr.flipX;
+            rb.linearVelocity = -rb.linearVelocity / 3;
+            rb.AddForce(Vector3.up * 5, ForceMode2D.Impulse);
         }
     }
 
@@ -206,7 +217,7 @@ public class Player : MonoBehaviour
         {
             onLeader = false;
             isClimbing = false;
-            velocity.y = 0;
+            rb.gravityScale = 1f;
         }
     }
 
@@ -264,6 +275,15 @@ public class Player : MonoBehaviour
         else
         {
             rb.AddForce(new Vector2(10, 10), ForceMode2D.Impulse);
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
     }
 }
