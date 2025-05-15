@@ -52,13 +52,13 @@ public class Player : MonoBehaviour
             isClimbing = true;
             rb.gravityScale = 0f;
             rb.linearVelocity = Vector2.zero; // Para que no se acumule velocidad al comenzar a escalar
-            animator.SetBool("climb",true);
+            animator.SetBool("climb", true);
         }
         else if (!onLeader)
         {
             isClimbing = false;
             rb.gravityScale = 1f;
-            animator.SetBool("climb",false);
+            animator.SetBool("climb", false);
         }
 
         if (isClimbing)
@@ -90,14 +90,48 @@ public class Player : MonoBehaviour
                 break;
         }
 
-        animator.SetFloat("velX", moveInput.x);
-        int velXint = (int)moveInput.x;
-        animator.SetInteger("velX", velXint);
+        float animatorVel = 0f;
+
+        switch (currentSurface)
+        {
+            case Surface.Lurra:
+                animatorVel = moveInput.x;
+                break;
+            case Surface.Zapaia:
+                animatorVel = -moveInput.x; // invertido para techo
+                break;
+            case Surface.Ezkerra:
+                animatorVel = -moveInput.y; // movimiento hacia arriba = derecha visualmente
+                break;
+            case Surface.Eskubi:
+                animatorVel = moveInput.y;
+                break;
+        }
+
+        animator.SetFloat("velX", animatorVel);
+        animator.SetInteger("velX", (int)animatorVel);
 
         animator.SetFloat("velY", moveInput.y);
 
-        if (moveInput.x < 0) sr.flipX = true;
-        else if (moveInput.x > 0) sr.flipX = false;
+        switch (currentSurface)
+        {
+            case Surface.Lurra: // Suelo normal
+                sr.flipX = moveInput.x < 0;
+                break;
+
+            case Surface.Zapaia: // Techo - invertir la lógica
+                sr.flipX = moveInput.x > 0;
+                break;
+
+            case Surface.Ezkerra: // Pared izquierda
+                sr.flipX = moveInput.y > 0;
+                break;
+
+            case Surface.Eskubi: // Pared derecha
+                sr.flipX = moveInput.y < 0;
+                break;
+        }
+
 
         rb.MovePosition(rb.position + moveInput * speed * Time.deltaTime);
 
