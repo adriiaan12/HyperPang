@@ -36,6 +36,7 @@ Transform:
   m_Children:
   - {fileID: 4541468272351522}
   - {fileID: 1291397424972867613}
+  - {fileID: 6598065179898285481}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &212162032204871356
@@ -126,7 +127,7 @@ Rigidbody2D:
   m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
+  m_UseAutoMass: 1
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
@@ -155,11 +156,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 50
+  climbSpeed: 5
+  jumpForce: 12
+  gravity: -20
+  groundCheckRadius: 0.1
   shield: {fileID: 1984990917473760}
   blink: 0
   arrowPrefab: {fileID: 1572133254941462, guid: a7514f3dc7b71e44b97d4c4a69bec80f,
     type: 3}
   shotSpawnPoint: {fileID: 1291397424972867613}
+  groundCheck: {fileID: 6598065179898285481}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!58 &58177199972637852
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -334,6 +343,37 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4536559363693946}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8422056041537288754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6598065179898285481}
+  m_Layer: 12
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6598065179898285481
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8422056041537288754}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.26, y: 0.06, z: 0.08606427}
+  m_LocalScale: {x: 2, y: 2.375, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4536559363693946}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

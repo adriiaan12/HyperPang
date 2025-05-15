@@ -9,6 +9,11 @@ public class Player : MonoBehaviour
     Surface currentSurface = Surface.Lurra;
 
     public float speed = 10f;
+    public float climbSpeed = 8f;
+    public float jumpForce = 18f;
+
+    public float gravity = -30f;
+
     Rigidbody2D rb;
     Animator animator;
     SpriteRenderer sr;
@@ -17,8 +22,18 @@ public class Player : MonoBehaviour
     public GameObject shield;
     public bool blink;
 
-    public GameObject arrowPrefab; // Prefab de la flecha
-    public Transform shotSpawnPoint; // Punto de aparición del disparo
+    public GameObject arrowPrefab;
+    public Transform shotSpawnPoint;
+
+    public Transform groundCheck;
+    public float groundCheckRadius = 0.1f;
+    public LayerMask groundLayer;
+
+    private bool onLeader = false;
+    private bool isClimbing = false;
+    private bool isGrounded = false;
+
+    private Vector2 velocity;
 
     void Awake()
     {
@@ -26,15 +41,37 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+
+        rb.bodyType = RigidbodyType2D.Kinematic;
     }
 
     void Update()
     {
         if (!GameManager.inGame) return;
 
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
         Vector2 moveInput = Vector2.zero;
 
-        // Movimiento según superficie actual
+        if (onLeader && Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.1f)
+        {
+            isClimbing = true;
+            velocity.y = Input.GetAxisRaw("Vertical") * climbSpeed;
+        }
+        else if (isClimbing && !onLeader)
+        {
+            isClimbing = false;
+        }
+
+        if (isClimbing)
+        {
+            velocity.x = 0;
+            animator.SetFloat("velX", 0);
+            animator.SetFloat("velY", velocity.y);
+            rb.MovePosition(rb.position + new Vector2(0, velocity.y * Time.deltaTime));
+            return;
+        }
+
         switch (currentSurface)
         {
             case Surface.Lurra:
@@ -44,12 +81,33 @@ public class Player : MonoBehaviour
                 moveInput = new Vector2(-Input.GetAxisRaw("Horizontal"), 0);
                 break;
             case Surface.Ezkerra:
-            moveInput = new Vector2(0, -Input.GetAxisRaw("Horizontal"));
-            break;
+                moveInput = new Vector2(0, -Input.GetAxisRaw("Horizontal"));
+                break;
             case Surface.Eskubi:
                 moveInput = new Vector2(0, Input.GetAxisRaw("Horizontal"));
                 break;
         }
+
+        velocity.x = moveInput.x * speed;
+
+        if (Input.GetKeyDown(KeyCode.W) && isGrounded && currentSurface == Surface.Lurra && !isClimbing)
+        {
+            velocity.y = jumpForce;
+            animator.SetTrigger("jump");
+        }
+
+        // Aplicar gravedad constante
+        if (!isGrounded && !isClimbing)
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
+        else if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = 0;
+        }
+
+        Vector2 nextPos = rb.position + velocity * Time.deltaTime;
+        rb.MovePosition(nextPos);
 
         animator.SetFloat("velX", moveInput.x);
         animator.SetFloat("velY", moveInput.y);
@@ -57,17 +115,14 @@ public class Player : MonoBehaviour
         if (moveInput.x < 0) sr.flipX = true;
         else if (moveInput.x > 0) sr.flipX = false;
 
-        rb.MovePosition(rb.position + moveInput * speed * Time.deltaTime);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ShootArrow();
+        }
 
         if (GameManager.gm.time < 0)
         {
             StartCoroutine(Lose());
-        }
-
-        // Disparo
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ShootArrow();
         }
     }
 
@@ -100,11 +155,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    void UpdateGravity()
-    {
-        rb.gravityScale = (currentSurface == Surface.Lurra) ? 1f : 0f;
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (GameManager.inGame && !FreezeManager.fm.freeze)
@@ -123,38 +173,40 @@ public class Player : MonoBehaviour
             }
         }
 
-        // Cambio de superficie
+        if (collision.CompareTag("leader"))
+        {
+            onLeader = true;
+        }
+
         if (collision.CompareTag("lurra"))
         {
             currentSurface = Surface.Lurra;
             AlignToSurface(currentSurface);
-            UpdateGravity();
         }
         else if (collision.CompareTag("ezkerra"))
         {
             currentSurface = Surface.Ezkerra;
             AlignToSurface(currentSurface);
-            UpdateGravity();
         }
         else if (collision.CompareTag("eskubi"))
         {
             currentSurface = Surface.Eskubi;
             AlignToSurface(currentSurface);
-            UpdateGravity();
         }
         else if (collision.CompareTag("zapaia"))
         {
             currentSurface = Surface.Zapaia;
             AlignToSurface(currentSurface);
-            UpdateGravity();
         }
+    }
 
-        // Rebote fuera de juego
-        if (!GameManager.inGame && (collision.CompareTag("ezkerra") || collision.CompareTag("eskubi")))
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("leader"))
         {
-            sr.flipX = !sr.flipX;
-            rb.linearVelocity = -rb.linearVelocity / 3;
-            rb.AddForce(Vector3.up * 5, ForceMode2D.Impulse);
+            onLeader = false;
+            isClimbing = false;
+            velocity.y = 0;
         }
     }
 
