@@ -56,7 +56,7 @@ public class ShootManager : MonoBehaviour {
         {
             ChangeShot(1);
         }
-        if (CanShot() && Input.GetKeyDown(KeyCode.Space) && GameManager.inGame )
+        if (CanShot() && Input.GetKeyDown(KeyCode.Space) && GameManager.inGame)
         {
             Shot();
         }
@@ -148,7 +148,7 @@ public class ShootManager : MonoBehaviour {
                     shotImage.CurrentShot("Ancla");
                     break;
                 case 3:
-                    maxShots = 15;
+                    maxShots = 2;
                     shotImage.CurrentShot("Gun");
                     break;
             }
