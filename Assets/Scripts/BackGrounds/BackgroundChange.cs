@@ -14,17 +14,19 @@ public class BackgroundChange : MonoBehaviour {
         Background();
 	}
     public void Background()
-    {
+    {   /*
         currentBackground = GetComponent<Image>();
 
-        if (GameManager.gm.gamemode== GameMode.TOUR)
+        if (GameManager.gm.gamemode == GameMode.TOUR)
         {
+
             currentBackground.sprite = backgrounds[SceneManager.GetActiveScene().buildIndex - 3];
+            if (SceneManager.GetActiveScene().buildIndex == 0) currentBackground.sprite = Resources.Load<Sprite>("Sprites/ESI");;
         }
         else
         {
-            currentBackground.sprite = backgrounds[GameManager.gm.currentLvl-1];
-        }
+            currentBackground.sprite = backgrounds[GameManager.gm.currentLvl - 1];
+        }*/
       
     }
 	
