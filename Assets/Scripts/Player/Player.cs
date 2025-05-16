@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    public enum Surface { Lurra, Ezkerra, Eskubi, Zapaia }
-    public Surface currentSurface = Surface.Lurra;
+    public enum Surface { Suelo, Izquierda, Derecha, Techo }
+    public Surface currentSurface = Surface.Suelo;
 
     public float speed = 10f;
     public float climbSpeed = 5f;
@@ -76,16 +76,16 @@ public class Player : MonoBehaviour
         Vector2 moveInput = Vector2.zero;
         switch (currentSurface)
         {
-            case Surface.Lurra:
+            case Surface.Suelo:
                 moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
                 break;
-            case Surface.Zapaia:
+            case Surface.Techo:
                 moveInput = new Vector2(-Input.GetAxisRaw("Horizontal"), 0);
                 break;
-            case Surface.Ezkerra:
+            case Surface.Izquierda:
                 moveInput = new Vector2(0, -Input.GetAxisRaw("Horizontal"));
                 break;
-            case Surface.Eskubi:
+            case Surface.Derecha:
                 moveInput = new Vector2(0, Input.GetAxisRaw("Horizontal"));
                 break;
         }
@@ -94,16 +94,16 @@ public class Player : MonoBehaviour
 
         switch (currentSurface)
         {
-            case Surface.Lurra:
+            case Surface.Suelo:
                 animatorVel = moveInput.x;
                 break;
-            case Surface.Zapaia:
+            case Surface.Techo:
                 animatorVel = -moveInput.x; // invertido para techo
                 break;
-            case Surface.Ezkerra:
+            case Surface.Izquierda:
                 animatorVel = -moveInput.y; // movimiento hacia arriba = derecha visualmente
                 break;
-            case Surface.Eskubi:
+            case Surface.Derecha:
                 animatorVel = moveInput.y;
                 break;
         }
@@ -115,19 +115,19 @@ public class Player : MonoBehaviour
 
         switch (currentSurface)
         {
-            case Surface.Lurra: // Suelo normal
+            case Surface.Suelo: // Suelo normal
                 sr.flipX = moveInput.x < 0;
                 break;
 
-            case Surface.Zapaia: // Techo - invertir la lógica
+            case Surface.Techo: // Techo - invertir la lógica
                 sr.flipX = moveInput.x > 0;
                 break;
 
-            case Surface.Ezkerra: // Pared izquierda
+            case Surface.Izquierda: // Pared izquierda
                 sr.flipX = moveInput.y > 0;
                 break;
 
-            case Surface.Eskubi: // Pared derecha
+            case Surface.Derecha: // Pared derecha
                 sr.flipX = moveInput.y < 0;
                 break;
         }
@@ -135,8 +135,8 @@ public class Player : MonoBehaviour
 
         rb.MovePosition(rb.position + moveInput * speed * Time.deltaTime);
 
-        // Salto (solo en Lurra, si estamos en suelo y no escalando)
-        if (Input.GetKeyDown(KeyCode.W) && isGrounded && currentSurface == Surface.Lurra && !isClimbing)
+        // Salto (solo en Suelo, si estamos en suelo y no escalando)
+        if (Input.GetKeyDown(KeyCode.W) && isGrounded && currentSurface == Surface.Suelo && !isClimbing)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             animator.SetTrigger("jump");
@@ -156,16 +156,16 @@ public class Player : MonoBehaviour
     {
         switch (surface)
         {
-            case Surface.Lurra:
+            case Surface.Suelo:
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 break;
-            case Surface.Ezkerra:
+            case Surface.Izquierda:
                 transform.rotation = Quaternion.Euler(0, 0, -90);
                 break;
-            case Surface.Eskubi:
+            case Surface.Derecha:
                 transform.rotation = Quaternion.Euler(0, 0, 90);
                 break;
-            case Surface.Zapaia:
+            case Surface.Techo:
                 transform.rotation = Quaternion.Euler(0, 0, 180);
                 break;
         }
@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
 
     void UpdateGravity()
     {
-        rb.gravityScale = (currentSurface == Surface.Lurra) ? 1f : 0f;
+        rb.gravityScale = (currentSurface == Surface.Suelo) ? 1f : 0f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -199,32 +199,32 @@ public class Player : MonoBehaviour
             onLeader = true;
         }
 
-        if (collision.CompareTag("lurra"))
+        if (collision.CompareTag("Suelo"))
         {
-            currentSurface = Surface.Lurra;
+            currentSurface = Surface.Suelo;
             AlignToSurface(currentSurface);
             UpdateGravity();
         }
-        else if (collision.CompareTag("ezkerra"))
+        else if (collision.CompareTag("Izquierda"))
         {
-            currentSurface = Surface.Ezkerra;
+            currentSurface = Surface.Izquierda;
             AlignToSurface(currentSurface);
             UpdateGravity();
         }
-        else if (collision.CompareTag("eskubi"))
+        else if (collision.CompareTag("Derecha"))
         {
-            currentSurface = Surface.Eskubi;
+            currentSurface = Surface.Derecha;
             AlignToSurface(currentSurface);
             UpdateGravity();
         }
-        else if (collision.CompareTag("zapaia"))
+        else if (collision.CompareTag("Techo"))
         {
-            currentSurface = Surface.Zapaia;
+            currentSurface = Surface.Techo;
             AlignToSurface(currentSurface);
             UpdateGravity();
         }
 
-        if (!GameManager.inGame && (collision.CompareTag("ezkerra") || collision.CompareTag("eskubi")))
+        if (!GameManager.inGame && (collision.CompareTag("Izquierda") || collision.CompareTag("Derecha")))
         {
             sr.flipX = !sr.flipX;
             rb.linearVelocity = -rb.linearVelocity / 3;

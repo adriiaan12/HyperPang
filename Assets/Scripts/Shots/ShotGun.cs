@@ -37,16 +37,16 @@ public class ShotGun : MonoBehaviour
     {
         switch (surface)
         {
-            case Surface.Lurra:
+            case Surface.Suelo:
                 direction = Vector2.up;
                 break;
-            case Surface.Zapaia:
+            case Surface.Techo:
                 direction = Vector2.down;
                 break;
-            case Surface.Ezkerra:
+            case Surface.Izquierda:
                 direction = Vector2.right;
                 break;
-            case Surface.Eskubi:
+            case Surface.Derecha:
                 direction = Vector2.left;
                 break;
         }

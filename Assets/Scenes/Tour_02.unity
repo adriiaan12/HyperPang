@@ -882,8 +882,8 @@ GameObject:
   - component: {fileID: 582643530}
   - component: {fileID: 582643531}
   m_Layer: 12
-  m_Name: zapaia
-  m_TagString: zapaia
+  m_Name: Techo
+  m_TagString: Techo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1055,8 +1055,8 @@ GameObject:
   - component: {fileID: 613807083}
   - component: {fileID: 613807084}
   m_Layer: 12
-  m_Name: eskubi
-  m_TagString: eskubi
+  m_Name: Derecha
+  m_TagString: Derecha
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2523,8 +2523,8 @@ GameObject:
   - component: {fileID: 1307242287}
   - component: {fileID: 1307242288}
   m_Layer: 12
-  m_Name: lurra
-  m_TagString: lurra
+  m_Name: Suelo
+  m_TagString: Suelo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2697,7 +2697,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1344795420}
   m_Layer: 12
-  m_Name: Hormak
+  m_Name: Terreno
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3100,8 +3100,8 @@ GameObject:
   - component: {fileID: 1485891890}
   - component: {fileID: 1485891891}
   m_Layer: 12
-  m_Name: ezkerra
-  m_TagString: ezkerra
+  m_Name: Izquierda
+  m_TagString: Izquierda
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

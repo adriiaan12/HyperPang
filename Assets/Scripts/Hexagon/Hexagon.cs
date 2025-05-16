@@ -200,11 +200,11 @@ public class Hexagon : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "lurra" || other.gameObject.tag == "zapaia")
+        if (other.gameObject.tag == "Suelo" || other.gameObject.tag == "Techo")
         {
             forceY *= -1;
         }
-        if (other.gameObject.tag == "ezkerra" || other.gameObject.tag == "eskubi")
+        if (other.gameObject.tag == "Izquierda" || other.gameObject.tag == "Derecha")
         {
             forceX *= -1;
         }

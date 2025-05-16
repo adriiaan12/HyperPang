@@ -93,7 +93,7 @@ public class ShootManager : MonoBehaviour {
                 ancla.SetSurface(play.currentSurface);
                 break;
             case 3:
-                if(play.currentSurface.ToString() == "Zapaia" || play.currentSurface.ToString() == "Lurra" ){
+                if(play.currentSurface.ToString() == "Techo" || play.currentSurface.ToString() == "Suelo" ){
                 GameObject shot1gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x + .5f, player.position.y), Quaternion.Euler(new Vector3(0,0,-5)));
                 GameObject shot2gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x , player.position.y), Quaternion.identity);
                 GameObject shot3gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x - .5f, player.position.y), Quaternion.Euler(new Vector3(0, 0, 5)));
@@ -104,7 +104,7 @@ public class ShootManager : MonoBehaviour {
                 ShotGun laser3 = shot3gun.GetComponent<ShotGun>();
                 laser3.SetSurface(play.currentSurface);
                 }
-                else if(play.currentSurface.ToString() == "Ezkerra" || play.currentSurface.ToString() == "Eskubi" ){
+                else if(play.currentSurface.ToString() == "Izquierda" || play.currentSurface.ToString() == "Derecha" ){
                 GameObject shot1gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x , player.position.y + 0.5f), Quaternion.Euler(new Vector3(0,0,-5)));
                 GameObject shot2gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x , player.position.y), Quaternion.identity);
                 GameObject shot3gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x , player.position.y - 0.5f), Quaternion.Euler(new Vector3(0, 0, 5)));

@@ -22,6 +22,10 @@ TagManager:
   - platform
   - chain
   - Undefined
+  - Suelo
+  - Techo
+  - Izquierda
+  - Derecha
   layers:
   - Default
   - TransparentFX

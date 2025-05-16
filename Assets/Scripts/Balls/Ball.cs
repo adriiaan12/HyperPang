@@ -167,7 +167,7 @@ public class Ball : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.tag == "lurra" && 
+        if(other.gameObject.tag == "Suelo" && 
             (gameObject.name.Contains("DestroyBall") ||
             gameObject.name.Contains("StopBall")))
         {
