@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Hexagon : MonoBehaviour {
 
@@ -15,10 +14,10 @@ public class Hexagon : MonoBehaviour {
 
     float rotSpeed;
 
-
-
-
     public GameObject powerUp;
+
+    // Bandera para evitar dividir varias veces
+    private bool alreadySplit = false;
 
     private void Awake()
     {
@@ -54,20 +53,33 @@ public class Hexagon : MonoBehaviour {
             rb.linearVelocity = Vector2.zero;
         }
     }
+
     public void Split()
     {
+        // Evitar división múltiple
+        if (alreadySplit)
+        {
+            Debug.LogWarning("Hexagon ya dividido, ignorando Split: " + name);
+            return;
+        }
+        alreadySplit = true;
+
+        Vector2 spawnOffset = new Vector2(0, 0.2f); // Desplaza hacia arriba
+        
         if (nextHexagon != null)
         {
-            
             if (GameManager.gm.gamemode == GameMode.TOUR)
             {
                 InstantiatePrize();
             }
-            GameObject hex1 = Instantiate(nextHexagon, rb.position + Vector2.right / 4, Quaternion.identity);
-            hex1.GetComponent<Hexagon>().right = true;
 
-            GameObject hex2 = Instantiate(nextHexagon, rb.position + Vector2.left / 4, Quaternion.identity);
+            GameObject hex1 = Instantiate(nextHexagon, rb.position + Vector2.right / 4 + spawnOffset, Quaternion.identity);
+            hex1.GetComponent<Hexagon>().right = true;
+            hex1.GetComponent<Hexagon>().alreadySplit = false;  // Asegurarse que el clon no esté marcado
+
+            GameObject hex2 = Instantiate(nextHexagon, rb.position + Vector2.left / 4 + spawnOffset, Quaternion.identity);
             hex2.GetComponent<Hexagon>().right = false;
+            hex2.GetComponent<Hexagon>().alreadySplit = false;  // Igual aquí
 
             if (!FreezeManager.fm.freeze)
             {
@@ -75,7 +87,6 @@ public class Hexagon : MonoBehaviour {
                 hex1.GetComponent<Hexagon>().forceY = -forceY;
                 hex2.GetComponent<Hexagon>().forceX = -forceX;
                 hex2.GetComponent<Hexagon>().forceY = -forceY;
-
             }
             else
             {
@@ -103,11 +114,9 @@ public class Hexagon : MonoBehaviour {
     }
     public void StartForce(GameObject hex)
     {
-             
         if (right)
         {
-           
-           hex.GetComponent<Hexagon>().forceX = forceX;
+            hex.GetComponent<Hexagon>().forceX = forceX;
         }
         else
         {
@@ -137,11 +146,9 @@ public class Hexagon : MonoBehaviour {
         {
             if (item != null)
             {
-                 item.GetComponent<Hexagon>().forceX = currentforceX;
-                 item.GetComponent<Hexagon>().forceY = currentforceY;
-                item.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(currentforceX,currentforceY);
-
-
+                item.GetComponent<Hexagon>().forceX = currentforceX;
+                item.GetComponent<Hexagon>().forceY = currentforceY;
+                item.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(currentforceX, currentforceY);
             }
         }
     }
@@ -164,9 +171,6 @@ public class Hexagon : MonoBehaviour {
         {
             forceY = 1;
         }
-
-        
-
     }
     public void NormalSpeedHexagon()
     {
