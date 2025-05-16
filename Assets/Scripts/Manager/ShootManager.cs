@@ -93,7 +93,6 @@ public class ShootManager : MonoBehaviour {
                 ancla.SetSurface(play.currentSurface);
                 break;
             case 3:
-                Debug.Log($"Queota: {play.currentSurface.ToString()}");
                 if(play.currentSurface.ToString() == "Zapaia" || play.currentSurface.ToString() == "Lurra" ){
                 GameObject shot1gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x + .5f, player.position.y), Quaternion.Euler(new Vector3(0,0,-5)));
                 GameObject shot2gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x , player.position.y), Quaternion.identity);
