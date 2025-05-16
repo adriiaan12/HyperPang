@@ -1,34 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Player;
 
 public class ShotAncla : MonoBehaviour
 {
-
     float speed = 4;
-
     public GameObject chainGFX;
-
+    
     Vector2 startPos;
-
+    Vector2 direction = Vector2.up; // Dirección por defecto
     List<GameObject> chains = new List<GameObject>();
 
-    // Use this for initialization
     void Start()
     {
         startPos = transform.position;
         GameObject chain = Instantiate(chainGFX, transform.position, Quaternion.identity);
         chain.transform.parent = transform;
-
         chains.Add(chain);
-        startPos = transform.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        transform.position += Vector3.up * speed * Time.deltaTime;
-        if ((transform.position.y - startPos.y) >= 0.2f)
+        // Usar la variable direction en lugar de Vector3.up
+        transform.position += (Vector3)direction * speed * Time.deltaTime;
+        
+        if (Vector2.Distance(transform.position, startPos) >= 0.2f)
         {
             GameObject chain = Instantiate(chainGFX, transform.position, Quaternion.identity);
             chain.transform.parent = transform;
@@ -36,11 +33,34 @@ public class ShotAncla : MonoBehaviour
             startPos = transform.position;
         }
     }
+
+    public void SetSurface(Surface surface)
+    {
+        switch (surface)
+        {
+            case Surface.Lurra:
+                direction = Vector2.up;
+                break;
+            case Surface.Zapaia:
+                direction = Vector2.down;
+                break;
+            case Surface.Ezkerra:
+                direction = Vector2.right;
+                break;
+            case Surface.Eskubi:
+                direction = Vector2.left;
+                break;
+        }
+
+        // Ajustar rotación para que el ancla apunte correctamente
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "zapaia")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-
             StartCoroutine(DestroyAncle());
         }
         if (collision.gameObject.tag == "ball")
@@ -55,6 +75,7 @@ public class ShotAncla : MonoBehaviour
             Destroy(gameObject);
             ShootManager.shm.DestroyShot();
         }
+        
     }
 
     IEnumerator DestroyAncle()
@@ -68,6 +89,5 @@ public class ShotAncla : MonoBehaviour
         yield return new WaitForSeconds(1);
         Destroy(gameObject);
         ShootManager.shm.DestroyShot();
-
     }
 }

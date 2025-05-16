@@ -67,7 +67,6 @@ public class ShotArrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
 {
-    Debug.Log($"ShotArrow collided with: {collision.gameObject.name} (Tag: {collision.tag}, Layer: {collision.gameObject.layer})");
 
     if (collision.gameObject.name.Contains("DestroyBall"))
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShootManager : MonoBehaviour {
-
+    // Eliminamos el enum duplicado (ya está en Player)
     public static ShootManager shm;
     public GameObject[] Shots;
     Transform player;
@@ -13,7 +13,6 @@ public class ShootManager : MonoBehaviour {
     Animator animator;
     Player play;
     
-
     CurrentShotImage shotImage;
 
     private void Awake()
@@ -30,8 +29,8 @@ public class ShootManager : MonoBehaviour {
         play = FindObjectOfType<Player>();
         shotImage = FindObjectOfType<CurrentShotImage>();
     }
-    // Use this for initialization
-    void Start () {
+
+    void Start() {
         if (GameManager.gm.gamemode == GameMode.TOUR)
         {
             typeOfShot = 0;
@@ -41,7 +40,7 @@ public class ShootManager : MonoBehaviour {
         {
             ChangeShot(1);
         }
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -65,31 +64,62 @@ public class ShootManager : MonoBehaviour {
         {
             numberOfShots = 0;
         }
-	}
-    bool CanShot()
+	        }
+     bool CanShot()
     {
-        if(numberOfShots < maxShots )
-        {
-            return true;
-        }
-        return false;
+        return numberOfShots < maxShots;
     }
+
     void Shot()
     {
-        if (typeOfShot != 3)
-        {
 
-
-            Instantiate(Shots[typeOfShot], player.position, Quaternion.identity);
-        }
-        else
+        switch (typeOfShot)
         {
-            Instantiate(Shots[typeOfShot], new Vector2(player.position.x + .5f, player.position.y + 1), Quaternion.Euler(new Vector3(0,0,-5)));
-            Instantiate(Shots[typeOfShot], new Vector2(player.position.x , player.position.y + 1), Quaternion.identity);
-            Instantiate(Shots[typeOfShot], new Vector2(player.position.x - .5f, player.position.y + 1), Quaternion.Euler(new Vector3(0, 0, 5)));
+            case 0:
+                GameObject shot = Instantiate(Shots[typeOfShot], player.position, Quaternion.identity);
+                ShotArrow arrow = shot.GetComponent<ShotArrow>();
+                arrow.SetSurface(play.currentSurface);
+                break;
+
+            case 1:
+                GameObject shot1 = Instantiate(Shots[typeOfShot], player.position, Quaternion.identity);
+                ShotArrow arrow1 = shot1.GetComponent<ShotArrow>();
+                arrow1.SetSurface(play.currentSurface);
+
+                break;
+            case 2:
+                GameObject shotancla = Instantiate(Shots[typeOfShot], player.position, Quaternion.identity);
+                ShotAncla ancla = shotancla.GetComponent<ShotAncla>();
+                ancla.SetSurface(play.currentSurface);
+                break;
+            case 3:
+                Debug.Log($"Queota: {play.currentSurface.ToString()}");
+                if(play.currentSurface.ToString() == "Zapaia" || play.currentSurface.ToString() == "Lurra" ){
+                GameObject shot1gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x + .5f, player.position.y), Quaternion.Euler(new Vector3(0,0,-5)));
+                GameObject shot2gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x , player.position.y), Quaternion.identity);
+                GameObject shot3gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x - .5f, player.position.y), Quaternion.Euler(new Vector3(0, 0, 5)));
+                ShotGun laser1 = shot1gun.GetComponent<ShotGun>();
+                laser1.SetSurface(play.currentSurface);
+                ShotGun laser2 = shot2gun.GetComponent<ShotGun>();
+                laser2.SetSurface(play.currentSurface);
+                ShotGun laser3 = shot3gun.GetComponent<ShotGun>();
+                laser3.SetSurface(play.currentSurface);
+                }
+                else if(play.currentSurface.ToString() == "Ezkerra" || play.currentSurface.ToString() == "Eskubi" ){
+                GameObject shot1gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x , player.position.y + 0.5f), Quaternion.Euler(new Vector3(0,0,-5)));
+                GameObject shot2gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x , player.position.y), Quaternion.identity);
+                GameObject shot3gun = Instantiate(Shots[typeOfShot], new Vector2(player.position.x , player.position.y - 0.5f), Quaternion.Euler(new Vector3(0, 0, 5)));
+                ShotGun laser1 = shot1gun.GetComponent<ShotGun>();
+                laser1.SetSurface(play.currentSurface);
+                ShotGun laser2 = shot2gun.GetComponent<ShotGun>();
+                laser2.SetSurface(play.currentSurface);
+                ShotGun laser3 = shot3gun.GetComponent<ShotGun>();
+                laser3.SetSurface(play.currentSurface);
+                }
+                break;
         }
-            numberOfShots++;
-        
+
+        numberOfShots++;
     }
     public void DestroyShot()
     {
