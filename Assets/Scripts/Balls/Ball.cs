@@ -35,7 +35,7 @@ public class Ball : MonoBehaviour {
 
     public void Split()
     {
-        GameManager.gm.PanicProgress();
+        
         if (nextBall != null)
         {
             if (GameManager.gm.gamemode == GameMode.TOUR)

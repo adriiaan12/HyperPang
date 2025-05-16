@@ -84,9 +84,6 @@ public class FreezeManager : MonoBehaviour {
             }
         }
         freeze = false;
-        if (GameManager.gm.gamemode == GameMode.PANIC)
-        {
-            StartCoroutine(BallSpawner.bs.MoveDown());
-        }
+        
     }
 }

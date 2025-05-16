@@ -58,7 +58,7 @@ public class Hexagon : MonoBehaviour {
     {
         if (nextHexagon != null)
         {
-            GameManager.gm.PanicProgress();
+            
             if (GameManager.gm.gamemode == GameMode.TOUR)
             {
                 InstantiatePrize();

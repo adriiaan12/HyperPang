@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum GameMode { PANIC,TOUR};
+public enum GameMode {TOUR};
 
 public class GameManager : MonoBehaviour {
     public static GameManager gm;
@@ -40,16 +40,9 @@ public class GameManager : MonoBehaviour {
         lm = FindObjectOfType<LifeManager>();
         fruits = FindObjectOfType<Fruits>();
 
-        if (SceneManager.GetActiveScene().name.Equals("Panic"))
-        {
-            gamemode = GameMode.PANIC;
-            progressBar = GameObject.FindGameObjectWithTag("progress").GetComponent<Image>();
-            levelTXT = GameObject.FindGameObjectWithTag("level").GetComponent<Text>();
-        }
-        else
-        {
-            gamemode = GameMode.TOUR;
-        }
+        
+        gamemode = GameMode.TOUR;
+        
         
 
     }
@@ -60,11 +53,6 @@ public class GameManager : MonoBehaviour {
         ScoreManager.sm.UpdateHiScore();
        
       
-        if (gamemode == GameMode.PANIC)
-        {
-
-            progressBar.fillAmount = 0;
-        }
     }
 	
 	// Update is called once per frame
@@ -120,33 +108,7 @@ public class GameManager : MonoBehaviour {
         return Random.Range(0, 3);
     }
 
-    public void PanicProgress()
-    {
-        if(gamemode == GameMode.PANIC)
-        {
-            progressBar.fillAmount += 0.1f;
 
-            if(progressBar.fillAmount == 1)
-            {
-                
-                progressBar.fillAmount = 0;
-                currentLvl++;
-                BallSpawner.bs.IncreaseDificulty();
-
-                if (currentLvl < 10)
-                {
-                    levelTXT.text = "Lvl 0" + currentLvl.ToString();
-                }
-                else
-                {
-                    levelTXT.text = "Lvl " + currentLvl.ToString();
-                }
-                FindObjectOfType<BackgroundChange>().Background();
-            }
-
-        }
-       
-    }
 
     public IEnumerator GameStart()
     {

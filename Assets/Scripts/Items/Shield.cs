@@ -18,7 +18,7 @@ public class Shield : MonoBehaviour {
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "lurra")
+        if (other.gameObject.tag == "Suelo")
         {
             inGround = true;
             Destroy(gameObject, 60);
