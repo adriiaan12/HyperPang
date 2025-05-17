@@ -212,5 +212,6 @@ public class Hexagon : MonoBehaviour {
         {
             forceX *= -1;
         }
+  
     }
 }

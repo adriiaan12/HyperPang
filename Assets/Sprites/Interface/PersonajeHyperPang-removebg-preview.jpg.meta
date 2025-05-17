@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d1b9ac5b3d502b14abcece06ef2bca7f
+guid: 8a64f8171d20e6e4a9aaf84569ca9230
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8135696070177517727
-    second: ESI_0
+      213: -1813589423560485672
+    second: PersonajeHyperPang-removebg-preview_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -122,30 +122,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ESI_0
+      name: PersonajeHyperPang-removebg-preview_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 500
+        height: 500
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 16f07886783381f80800000000000000
-      internalID: -8135696070177517727
+      spriteID: 8d495403706d4d6e0800000000000000
+      internalID: -1813589423560485672
       vertices: []
       indices: 
       edges: []
@@ -173,8 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      ESI_0: -8135696070177517727
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
