@@ -6,7 +6,7 @@ public class SelectMode : MonoBehaviour {
     public Image[] modeImages;
     public Text[] modeTexts;
 
-    private string[] sceneNames = { "Tour_01", "Tour_02", "Tour_03", "Tour_04" };
+    private string[] sceneNames = { "Tour_01", "Tour_02", "Tour_03", "Tour_04", "Tour_05", "Tour_06", "Tour_07", "Tour_08" };
     private int modeIndex = 0; // Índice para seleccionar el modo actual
 
     void Start () {
