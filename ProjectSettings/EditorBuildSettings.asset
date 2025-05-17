@@ -26,5 +26,17 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tour_04.unity
     guid: 9fe44bcba5754d34a939ce85b6b76d9d
+  - enabled: 1
+    path: Assets/Scenes/Tour_05.unity
+    guid: 6bd85753c96788f4eb54c1959d597233
+  - enabled: 1
+    path: Assets/Scenes/Tour_06.unity
+    guid: 6efcfbcf18e014a44bf2fbecbd04125f
+  - enabled: 1
+    path: Assets/Scenes/Tour_07.unity
+    guid: 7337463699fbdbd4582a4559bbf4ce70
+  - enabled: 1
+    path: Assets/Scenes/Tour_08.unity
+    guid: 1dead41ad59bbad409af8f8253054cd9
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
